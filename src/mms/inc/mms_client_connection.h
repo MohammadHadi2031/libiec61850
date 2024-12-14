@@ -1172,10 +1172,10 @@ MmsConnection_fileOpenAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError
  * \return true if more data follows, false if last data has been received.
  */
 LIB61850_API bool
-MmsConnection_fileRead(MmsConnection self, MmsError* mmsError, int32_t frsmId, MmsFileReadHandler handler, void* handlerParameter);
+MmsConnection_fileRead(MmsConnection self, MmsError* mmsError, int32_t frsmId, MmsFileReadHandler handler, void* handlerParameter, uint32_t fileSize);
 
 LIB61850_API void
-MmsConnection_fileReadAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, int32_t frsmId, MmsConnection_FileReadHandler handler, void* parameter);
+MmsConnection_fileReadAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, int32_t frsmId, MmsConnection_FileReadHandler handler, void* parameter, uint32_t fileSize);
 
 /**
  * \brief close the file with the specified frsmID

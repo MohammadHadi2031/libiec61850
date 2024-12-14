@@ -2159,7 +2159,7 @@ IedConnection_getFile(IedConnection self, IedClientError* error, const char* fil
     {
         bool moreFollows =
                 MmsConnection_fileRead(self->connection, &mmsError, frsmId, mmsFileReadHandler,
-                        &clientFileReadHandler);
+                        &clientFileReadHandler, fileSize);
 
         if (mmsError != MMS_ERROR_NONE)
         {
@@ -2261,7 +2261,7 @@ mmsConnectionFileReadHandler (uint32_t invokeId, void* parameter, MmsError mmsEr
                 /* send next read request */
 
                 MmsConnection_fileReadAsync(self->connection, &(call->invokeId), &mmsError, frsmId,
-                        mmsConnectionFileReadHandler, self);
+                        mmsConnectionFileReadHandler, self, fileSize);
 
                 if (mmsError != MMS_ERROR_NONE)
                 {
@@ -2314,7 +2314,7 @@ mmsConnectionFileOpenHandler (uint32_t invokeId, void* parameter, MmsError mmsEr
         else
         {
             call->specificParameter2.getFileInfo.originalInvokeId = invokeId;
-            MmsConnection_fileReadAsync(self->connection, &(call->invokeId), &mmsError, frsmId, mmsConnectionFileReadHandler, self);
+            MmsConnection_fileReadAsync(self->connection, &(call->invokeId), &mmsError, frsmId, mmsConnectionFileReadHandler, self, fileSize);
 
             if (mmsError != MMS_ERROR_NONE)
             {

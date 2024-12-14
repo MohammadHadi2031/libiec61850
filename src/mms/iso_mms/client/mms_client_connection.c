@@ -1024,7 +1024,7 @@ handleAsyncResponse(MmsConnection self, ByteBuffer* response, uint32_t bufPos, M
             bool moreFollows;
 
             if (mmsMsg_parseFileReadResponse(ByteBuffer_getBuffer(response), bufPos, ByteBuffer_getSize(response), outstandingCall->invokeId, frsmId, &moreFollows,
-                    handler, outstandingCall->userParameter) == false)
+                    handler, outstandingCall->userParameter, fileSize) == false)
             {
                 handler(outstandingCall->invokeId, outstandingCall->userParameter, MMS_ERROR_PARSING_RESPONSE, frsmId, NULL, 0, false, fileSize);
             }
@@ -4110,7 +4110,7 @@ fileReadHandler(uint32_t invokeId, void* parameter, MmsError mmsError, int frsmI
 
 bool
 MmsConnection_fileRead(MmsConnection self, MmsError* mmsError, int32_t frsmId, MmsFileReadHandler handler,
-        void* handlerParameter)
+        void* handlerParameter, uint32_t fileSize)
 {
 #if (MMS_FILE_SERVICE == 1)
 
@@ -4126,7 +4126,7 @@ MmsConnection_fileRead(MmsConnection self, MmsError* mmsError, int32_t frsmId, M
 
     Semaphore_wait(parameter.waitForResponse);
 
-    MmsConnection_fileReadAsync(self, NULL,  &err, frsmId, fileReadHandler, &parameter);
+    MmsConnection_fileReadAsync(self, NULL,  &err, frsmId, fileReadHandler, &parameter, fileSize);
 
     if (err == MMS_ERROR_NONE)
     {
@@ -4152,7 +4152,7 @@ MmsConnection_fileRead(MmsConnection self, MmsError* mmsError, int32_t frsmId, M
 }
 
 void
-MmsConnection_fileReadAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, int32_t frsmId, MmsConnection_FileReadHandler handler, void* parameter)
+MmsConnection_fileReadAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError* mmsError, int32_t frsmId, MmsConnection_FileReadHandler handler, void* parameter, uint32_t fileSize)
 {
 #if (MMS_FILE_SERVICE == 1)
 
@@ -4173,6 +4173,7 @@ MmsConnection_fileReadAsync(MmsConnection self, uint32_t* usedInvokeId, MmsError
 
     MmsClientInternalParameter intParam;
     intParam.unionPtr.i32 = frsmId;
+    intParam.value = fileSize;
 
     MmsError err = sendAsyncRequest(self, invokeId, payload, MMS_CALL_TYPE_FILE_READ, handler, parameter, intParam);
 

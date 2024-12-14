@@ -742,7 +742,7 @@ mmsMsg_parseFileOpenResponse(uint8_t* buffer, int bufPos, int maxBufPos, int32_t
 }
 
 bool
-mmsMsg_parseFileReadResponse(uint8_t* buffer, int bufPos, int maxBufPos, uint32_t invokeId, int32_t frsmId, bool* moreFollows, MmsConnection_FileReadHandler handler, void* handlerParameter)
+mmsMsg_parseFileReadResponse(uint8_t* buffer, int bufPos, int maxBufPos, uint32_t invokeId, int32_t frsmId, bool* moreFollows, MmsConnection_FileReadHandler handler, void* handlerParameter, uint32_t fileSize)
 {
     int length;
     uint8_t* data = NULL;
@@ -804,7 +804,7 @@ mmsMsg_parseFileReadResponse(uint8_t* buffer, int bufPos, int maxBufPos, uint32_
         }
     }
 
-    handler(invokeId, handlerParameter, MMS_ERROR_NONE, frsmId, data, dataLen, *moreFollows, 0);
+    handler(invokeId, handlerParameter, MMS_ERROR_NONE, frsmId, data, dataLen, *moreFollows, fileSize);
 
     return true;
 }

@@ -603,7 +603,7 @@ handleConfirmedResponsePdu(
                         }
                         else
                         {
-                            if (mmsMsg_parseFileReadResponse(buffer, startBufPos, maxBufPos, invokeId, fileTask->frmsId, &moreFollows, mmsFileReadHandler, (void*) fileTask))
+                            if (mmsMsg_parseFileReadResponse(buffer, startBufPos, maxBufPos, invokeId, fileTask->frmsId, &moreFollows, mmsFileReadHandler, (void*) fileTask, 0))
                             {
                                 if (moreFollows)
                                 {

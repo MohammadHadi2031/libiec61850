@@ -25,6 +25,8 @@
 #endif
 #endif
 
+#define EXPORT_FUNCTIONS_FOR_DLL
+
 #if defined _WIN32 || defined __CYGWIN__
     #ifdef EXPORT_FUNCTIONS_FOR_DLL
         #define LIB61850_API __declspec(dllexport)
