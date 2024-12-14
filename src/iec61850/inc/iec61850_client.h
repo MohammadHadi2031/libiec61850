@@ -3015,7 +3015,7 @@ IedConnection_getFileDirectoryAsyncEx(IedConnection self, IedClientError* error,
  *         should be stopped. E.g. if the file cannot be stored client side due to missing resources.
  */
 typedef bool
-(*IedClientGetFileHandler) (void* parameter, uint8_t* buffer, uint32_t bytesRead);
+(*IedClientGetFileHandler) (void* parameter, uint8_t* buffer, uint32_t bytesRead, uint32_t fileSize);
 
 /**
  * \brief Implementation of the GetFile ACSI service
@@ -3051,9 +3051,13 @@ IedConnection_getFile(IedConnection self, IedClientError* error, const char* fil
  *
  * \return true, continue the file download when moreFollows is true, false, stop file download
  */
+//typedef bool
+//(*IedConnection_GetFileAsyncHandler) (uint32_t invokeId, void* parameter, IedClientError err, uint32_t originalInvokeId,
+//        uint8_t* buffer, uint32_t bytesRead, bool moreFollows);
+
 typedef bool
 (*IedConnection_GetFileAsyncHandler) (uint32_t invokeId, void* parameter, IedClientError err, uint32_t originalInvokeId,
-        uint8_t* buffer, uint32_t bytesRead, bool moreFollows);
+    uint8_t* buffer, uint32_t bytesRead, bool moreFollows, uint32_t fileSize);
 
 
 /**

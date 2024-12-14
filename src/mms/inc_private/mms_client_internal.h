@@ -75,6 +75,12 @@ typedef union
     int32_t i32;
     uint32_t u32;
     void* ptr;
+} MmsClientInternalParameterUnionPtr;
+
+typedef struct
+{
+    MmsClientInternalParameterUnionPtr unionPtr;
+    uint32_t value;
 } MmsClientInternalParameter;
 
 struct sMmsOutstandingCall

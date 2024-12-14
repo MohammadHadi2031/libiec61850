@@ -2119,13 +2119,13 @@ struct sClientProvidedFileReadHandler {
 };
 
 static void
-mmsFileReadHandler(void* parameter, int32_t frsmId, uint8_t* buffer, uint32_t bytesReceived)
+mmsFileReadHandler(void* parameter, int32_t frsmId, uint8_t* buffer, uint32_t bytesReceived, uint32_t fileSize)
 {
     (void)frsmId;
 
     struct sClientProvidedFileReadHandler* handler = (struct sClientProvidedFileReadHandler*) parameter;
 
-    handler->retVal = handler->handler(handler->handlerParameter, buffer, bytesReceived);
+    handler->retVal = handler->handler(handler->handlerParameter, buffer, bytesReceived, fileSize);
 
     handler->byteReceived += bytesReceived;
 }
@@ -2212,7 +2212,7 @@ mmsConnectionFileCloseHandler (uint32_t invokeId, void* parameter, MmsError mmsE
 
 static void
 mmsConnectionFileReadHandler (uint32_t invokeId, void* parameter, MmsError mmsError, int32_t frsmId, uint8_t* buffer, uint32_t byteReceived,
-        bool moreFollows)
+        bool moreFollows, uint32_t fileSize)
 {
     IedConnection self = (IedConnection) parameter;
 
@@ -2226,7 +2226,7 @@ mmsConnectionFileReadHandler (uint32_t invokeId, void* parameter, MmsError mmsEr
         {
             IedClientError err = iedConnection_mapMmsErrorToIedError(mmsError);
 
-            handler(call->specificParameter2.getFileInfo.originalInvokeId, call->callbackParameter, err, invokeId, NULL, 0, false);
+            handler(call->specificParameter2.getFileInfo.originalInvokeId, call->callbackParameter, err, invokeId, NULL, 0, false, fileSize);
 
             if (mmsError != MMS_ERROR_SERVICE_TIMEOUT)
             {
@@ -2246,7 +2246,7 @@ mmsConnectionFileReadHandler (uint32_t invokeId, void* parameter, MmsError mmsEr
         }
         else
         {
-            bool cont = handler(call->specificParameter2.getFileInfo.originalInvokeId, call->callbackParameter, IED_ERROR_OK, invokeId, buffer, byteReceived, moreFollows);
+            bool cont = handler(call->specificParameter2.getFileInfo.originalInvokeId, call->callbackParameter, IED_ERROR_OK, invokeId, buffer, byteReceived, moreFollows, fileSize);
 
             if ((moreFollows == false) || (cont == false))
             {
@@ -2267,7 +2267,7 @@ mmsConnectionFileReadHandler (uint32_t invokeId, void* parameter, MmsError mmsEr
                 {
                     IedClientError err = iedConnection_mapMmsErrorToIedError(mmsError);
 
-                    handler(invokeId, call->callbackParameter, err, invokeId, NULL, 0, false);
+                    handler(invokeId, call->callbackParameter, err, invokeId, NULL, 0, false, fileSize);
 
                     /* close file */
                     MmsConnection_fileCloseAsync(self->connection, &(call->invokeId), &mmsError, frsmId, mmsConnectionFileCloseHandler, self);
@@ -2307,7 +2307,7 @@ mmsConnectionFileOpenHandler (uint32_t invokeId, void* parameter, MmsError mmsEr
         {
             IedClientError err = iedConnection_mapMmsErrorToIedError(mmsError);
 
-            handler(invokeId, call->callbackParameter, err, invokeId, NULL, 0, false);
+            handler(invokeId, call->callbackParameter, err, invokeId, NULL, 0, false, fileSize);
 
             iedConnection_releaseOutstandingCall(self, call);
         }
@@ -2320,7 +2320,7 @@ mmsConnectionFileOpenHandler (uint32_t invokeId, void* parameter, MmsError mmsEr
             {
                 IedClientError err = iedConnection_mapMmsErrorToIedError(mmsError);
 
-                handler(invokeId, call->callbackParameter, err, invokeId, NULL, 0, false);
+                handler(invokeId, call->callbackParameter, err, invokeId, NULL, 0, false, fileSize);
 
                 /* close file */
                 MmsConnection_fileCloseAsync(self->connection, &(call->invokeId), &mmsError, frsmId, mmsConnectionFileCloseHandler, self);

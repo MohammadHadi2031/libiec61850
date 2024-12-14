@@ -804,7 +804,7 @@ mmsMsg_parseFileReadResponse(uint8_t* buffer, int bufPos, int maxBufPos, uint32_
         }
     }
 
-    handler(invokeId, handlerParameter, MMS_ERROR_NONE, frsmId, data, dataLen, *moreFollows);
+    handler(invokeId, handlerParameter, MMS_ERROR_NONE, frsmId, data, dataLen, *moreFollows, 0);
 
     return true;
 }

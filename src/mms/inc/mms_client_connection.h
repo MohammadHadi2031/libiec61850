@@ -1120,7 +1120,7 @@ typedef void
         bool moreFollows);
 
 typedef void
-(*MmsFileReadHandler) (void* parameter, int32_t frsmId, uint8_t* buffer, uint32_t bytesReceived);
+(*MmsFileReadHandler) (void* parameter, int32_t frsmId, uint8_t* buffer, uint32_t bytesReceived, uint32_t fileSize);
 
 /**
  * \brief Callback handler for the file read service
@@ -1137,7 +1137,7 @@ typedef void
  */
 typedef void
 (*MmsConnection_FileReadHandler) (uint32_t invokeId, void* parameter, MmsError mmsError, int32_t frsmId, uint8_t* buffer, uint32_t byteReceived,
-        bool moreFollows);
+        bool moreFollows, uint32_t fileSize);
 
 
 /**

@@ -485,7 +485,7 @@ getUploadTaskByInvokeId(MmsServer mmsServer, uint32_t invokeId)
 }
 
 static void
-mmsFileReadHandler(uint32_t invokeId, void* parameter, MmsError mmsError, int32_t frsmId, uint8_t* buffer, uint32_t bytesReceived, bool moreFollows)
+mmsFileReadHandler(uint32_t invokeId, void* parameter, MmsError mmsError, int32_t frsmId, uint8_t* buffer, uint32_t bytesReceived, bool moreFollows, uint32_t fileSize)
 {
     (void)invokeId;
     (void)frsmId;
